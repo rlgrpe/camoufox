@@ -801,6 +801,23 @@ git clone --depth 1 https://github.com/daijro/camoufox
 cd camoufox
 ```
 
+### Quick Start (Recommended)
+
+For most developers, use the git workflow for a complete setup:
+
+```bash
+make git-dir        # Clone Firefox source, apply patches, setup baseline (one command)
+make git-bootstrap  # Install build dependencies (one-time)
+make build          # Build Camoufox
+```
+
+**That's it.** Firefox is now fully patched and ready for development.
+
+### Alternative Workflows
+
+<details>
+<summary>Tarball Workflow (Original)</summary>
+
 ### Tarball Workflow (Original)
 
 This workflow downloads Firefox as a tarball and extracts it:

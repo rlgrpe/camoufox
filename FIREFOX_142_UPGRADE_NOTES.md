@@ -1,5 +1,22 @@
 # Firefox 142 Upgrade Notes
 
+## Platform-Specific Notes
+
+### macOS: BSD Patch vs GNU Patch Compatibility
+
+**Issue:** macOS ships with BSD patch (v2.0-12u11-Apple) which is significantly stricter about context matching than GNU patch (v2.7+). Some patches may fail on macOS due to context line mismatches, even when the patches apply cleanly on Linux.
+
+**Root Cause:** BSD patch requires exact context matches, while GNU patch handles "fuzzy" matching and line offsets more gracefully. When Firefox adds/removes lines near patch contexts (e.g., new `SPHINX_TREES` entries in build files), BSD patch fails while GNU patch succeeds.
+
+**Solution:** Install GNU patch via Homebrew:
+```bash
+brew install gpatch
+export PATH="/opt/homebrew/opt/gpatch/libexec/gnubin:$PATH"
+make git-dir
+```
+
+**Alternative:** Regenerate patches with updated Firefox 142 context (see config.patch fix in this document for example workflow).
+
 ## Current Status
 
 ✅ **Fixed Patches:**

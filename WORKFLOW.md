@@ -41,6 +41,33 @@ cd /home/azureuser/camoufox && python3 scripts/next_patch.py patches/<file>.patc
 make dir # apply all the patches. will bomb once it hits a failure.
 ```
 
+## Makefile Targets Reference
+
+### Key Commands for Different Workflows
+
+**Additions Management** (when you modify `additions/` like juggler, camoucfg):
+- **`make copy-additions`**: Copies `additions/` and `settings/` to Firefox source. Does NOT commit or tag. Fast for syncing changes during iteration.
+- **`make retag-baseline`**: Use this when you've modified files in `additions/` directory. Resets to pristine Firefox, copies your updated additions, commits, and re-tags as `unpatched`. This updates your baseline to include the modified additions before applying patches.
+
+**Example - You modified additions:**
+```bash
+vim additions/juggler/Helper.js     # Edit additions in outer repo
+make retag-baseline                  # Copy updated additions, rebuild baseline
+# Now apply patches on top of your updated baseline
+```
+
+**Checkpoint Management** (when creating new patches):
+- **`make tagged-checkpoint`**: Tags current state as `checkpoint`. Use this after applying existing patches when you want to create a NEW patch. This makes `git diff` only show your new changes, not all existing patches.
+
+**Example - Creating a new patch:**
+```bash
+make dir                            # Apply all existing patches
+make tagged-checkpoint              # Tag this as checkpoint
+vim dom/base/Navigator.cpp          # Make your new changes
+cd camoufox-142.0.1-fork.26
+git diff > ../patches/my-new-feature.patch  # Only shows your changes
+```
+
 # Workflow
 
 ## General Workflow
